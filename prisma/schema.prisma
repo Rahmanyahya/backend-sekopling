@@ -1,0 +1,139 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Siswa {
+  id             Int             @id @default(autoincrement())
+  email          String @unique
+  absen Int @unique
+  password       String
+  nama           String
+  no_telp        String
+  photo          String          @default("https://tse4.mm.bing.net/th?id=OIP.ELnJq_JhiyfewhCMKOkNfwHaHa&pid=Api&P=0&h=180")
+  jabatan        Role
+  pembayaran_kas Transaksi_kas[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @default(now())
+}
+
+model Guru {
+  id        Int            @id @default(autoincrement())
+  nama      String         @unique
+  mapel     Mapel
+  jadwal    Jadwal[]
+  tugas     Tugas[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @default(now())
+}
+
+model Jadwal {
+  id        Int        @id @default(autoincrement())
+  hari      Hari
+  guruID    Int
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now())
+
+   guru Guru @relation(fields: [guruID], references: [id])
+}
+
+model Tugas {
+  id        Int       @id @default(autoincrement())
+  judul     String    @unique
+  deskripsi String
+  deadLine  DateTime?  @default(now())
+  guruID    Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+
+  guru Guru @relation(fields: [guruID], references: [id])
+}
+
+model Transaksi_kas {
+  id        Int               @id @default(autoincrement())
+  siswaID   Int
+  Jumlah    Float             @db.Double
+  bulan     Bulan
+  Minggu    Minggu_Ke
+  status    Status_Pembayaran  @default(Belum_Bayar)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @default(now())
+
+  siswa Siswa @relation(fields: [siswaID], references: [id])
+}
+
+model event {
+  id        Int      @id @default(autoincrement())
+  pelaksanaan DateTime @default(now())
+  judul     String @unique
+  deskripsi String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+enum Role {
+  Ketua
+  Wakil
+  Bendahara
+  Sekertaris
+  Siswa
+}
+
+enum Status_Pembayaran {
+  Lunas
+  Kurang
+  Belum_Bayar
+}
+
+enum Bulan {
+  Januari
+  Februari
+  Maret
+  April
+  Mei
+  Juni
+  Juli
+  Agustus
+  September
+  Oktober
+  November
+  Desember
+}
+
+enum Minggu_Ke {
+  Satu
+  Dua
+  Tiga
+  Empat
+}
+
+enum Hari {
+  Senin
+  Selasa
+  Rabu
+  Kamis
+  Jumat
+}
+
+enum Mapel {
+  RPL
+  MATEMATIKA
+  SEJARAH
+  PKN
+  BAHASA_INDONESIA
+  BK
+  AGAMA
+  TKJ
+  EGLISH_DISCOVERIES
+  BAHASA_JAWA
+}
