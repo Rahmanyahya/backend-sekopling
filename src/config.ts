@@ -36,12 +36,14 @@ type addNewEvent = {
 
 type addNewGuru = {
     nama: string;
-    mapel: Mapel
+    mapel: Mapel,
 }
 
 type addNewJadwal = {
     hari: Hari
     guruID: number;
+    start: string;
+    end: string
 }
 
 type addNewSiswa = {

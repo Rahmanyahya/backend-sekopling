@@ -1,13 +1,14 @@
+import { profile } from "console";
 import { updateProfileData } from "../../config";
 import prisma from "../../DATABASE/db";
 
 const getTugas = async () => {
-    const data = await prisma.tugas.findMany()
+    const data = await prisma.tugas.findMany({include: {guru: {select: {nama: true,mapel: true}}}})
     return data.length > 0 ? data : null  
 }
 
 const getKas = async (siswaID: number) => {
-   const data = await prisma.transaksi_kas.findMany({where: {siswaID}}) 
+   const data = await prisma.transaksi_kas.findMany({where: {siswaID}, include: {siswa: {select: {nama: true}}}}) 
    return data.length > 0 ? data : null
 }
 
@@ -17,12 +18,13 @@ const getEvent = async () => {
 }
 
 const getMapel = async () => {
-   const data = await prisma.jadwal.findMany() 
+   const data = await prisma.jadwal.findMany({include: {guru: {select: {nama: true,mapel: true}}}}) 
    return data.length > 0 ? data : null
 }
 
 const updateProfile  = async (newData: updateProfileData) => {
    const data = await prisma.siswa.update({where: {id: newData.id}, data: {photo: newData.photo == null ? "https://tse4.mm.bing.net/th?id=OIP.ELnJq_JhiyfewhCMKOkNfwHaHa&pid=Api&P=0&h=180" : newData.photo, email: newData.email, no_telp: newData.no_telp}})
+   return ({id: data.id, email: data.email, no_telp: data.no_telp, photo_profile: data.photo})
 }
 
 const getSiswaById = async (siswaID: number) => {
@@ -41,9 +43,9 @@ const getProfileSiswa = async (id: number) => {
    return dataUser == null ? null : profile
 }
 
-const getAllGuru =  async () => {
-   const data = await prisma.guru.findMany()
-   return data.length > 0 ? data : null
+const getPengumuman = async () => {
+   const data = await prisma.pengumuman.findMany()
+   return data.length > 0 ? (data.map(item => ({description: item.deskripsi}))) : null
 }
 
-export {getTugas, getKas, getEvent,updateProfile, getMapel, getSiswaById, getProfileSiswa,getAllGuru}
+export {getTugas, getKas, getEvent,updateProfile, getMapel, getSiswaById, getProfileSiswa, getPengumuman}

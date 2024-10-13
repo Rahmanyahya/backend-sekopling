@@ -5,6 +5,7 @@ import sekertarisRouter from "./USER/SEKERTARIS/sekertaris.router";
 import wakilRouter from "./USER/WAKIL/wakil.router";
 import ketuaRouter from "./USER/KETUA/ketua.router";
 import cookieParser from "cookie-parser";
+import Login from "./auth/login.router"
 
 const app = Express()
 app.use(cookieParser())
@@ -22,6 +23,7 @@ app.use('/api/wakil', wakil.getRouter())
 app.use('/api/bendahara', bendahara.getRouter())
 app.use('/api/sekertaris', sekertaris.getRouter())
 app.use('/api/ketua', ketua.getRouter())
+app.use('/api/login',Login)
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000")

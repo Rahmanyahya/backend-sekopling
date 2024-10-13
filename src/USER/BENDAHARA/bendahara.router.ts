@@ -18,6 +18,7 @@ class bendaharaRouter extends siswaRouter {
         this.router.put('/kas/:id', cekJwt, allowedRole("Bendahara", "Ketua"), validateUpdateTransaction, updateKasController);
         this.router.delete('/kas/:id', cekJwt, allowedRole("Bendahara", "Ketua"), validateDeleteTransaction, deleteKasController);
         this.router.get('/kas/filter', cekJwt, allowedRole("Bendahara", "Ketua"), validateReadTransaction, getKasController);
+        this.router.get('/getAllSiswa', cekJwt, allowedRole("Bendahara"), getKasController)
     }
 
     getRouter() {

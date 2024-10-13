@@ -41,10 +41,19 @@ model Jadwal {
   id        Int        @id @default(autoincrement())
   hari      Hari
   guruID    Int
+  start String
+  end String
   createdAt DateTime    @default(now())
   updatedAt DateTime    @default(now())
 
-   guru Guru @relation(fields: [guruID], references: [id])
+   guru Guru? @relation(fields: [guruID], references: [id])
+}
+
+model pengumuman {
+  id        Int       @id @default(autoincrement())
+  deskripsi String    
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
 }
 
 model Tugas {
