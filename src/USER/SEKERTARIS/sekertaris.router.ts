@@ -2,9 +2,9 @@ import { allowedRole, cekJwt } from "../../AUTHO/cekJwt";
 import SiswaRouter from "../SISWA/siswa.router";
 import { addGuruController, deleteGuruController, updateGuruController,addEventController,addJadwalController,addTugasController,deleteEventController,deleteJadwalController,deleteTugasController,updateEventController,updateJadwalController,updateTugasController,
     addSiswaController,getAllSiswaController,updateSiswaController,
-    deleteSiswaController
+    deleteSiswaController, addPengumumanController,deletePengumumanController,updatePengumumanController
  } from "./sekertaris.controller";
-import { validateAddGuru, validateDeleteGuru, validateUpdateGuru,validateAddEvent,validateAddJadwal,validateAddTugas,validateDeleteEvent,validateDeleteJadwal,validateDeleteTugas,validateUpdateEvent,validateUpdateJadwal,validateUpdateTugas, addSiswaValidation, updateSiswaValidation, deleteSiswaValidation } from "./sekertaris.validation";
+import { validateAddGuru, validateDeleteGuru, validateUpdateGuru,validateAddEvent,validateAddJadwal,validateAddTugas,validateDeleteEvent,validateDeleteJadwal,validateDeleteTugas,validateUpdateEvent,validateUpdateJadwal,validateUpdateTugas, addSiswaValidation, updateSiswaValidation, deleteSiswaValidation,validateAddPengumuman,validateDeletePengumuman,validateUpdatePengumuman } from "./sekertaris.validation";
 
 class sekertarisRouter extends SiswaRouter {
     constructor () {
@@ -34,11 +34,16 @@ class sekertarisRouter extends SiswaRouter {
         this.router.delete('/tugas/:id', cekJwt,allowedRole("Sekertaris","Wakil","Ketua"),validateDeleteTugas,deleteTugasController)
 
         // siswa
-        this.router.post('/siswa', cekJwt,allowedRole("Sekertaris","Wakil","Ketua"),addSiswaValidation,addSiswaController)
+        this.router.post('/siswa', cekJwt,allowedRole("Sekertaris","Wakil","Ketua","Bendahara"),addSiswaValidation,addSiswaController)
         this.router.get('/siswa', cekJwt,allowedRole("Sekertaris","Wakil","Ketua"),getAllSiswaController)
         this.router.put('/siswa/:id',cekJwt,allowedRole("Sekertaris","Wakil","Ketua"),updateSiswaValidation,updateSiswaController)
         this.router.delete('/siswa/:id', cekJwt,allowedRole("Sekertaris","Wakil","Ketua"),deleteSiswaValidation,deleteSiswaController) 
       
+        //pengumuman
+        this.router.post('/pengumuman', cekJwt, allowedRole("Sekertaris","Wakil","Ketua"),validateAddPengumuman,addPengumumanController)
+        this.router.put('/pengumuman/:id',cekJwt,allowedRole("Sekertaris","Wakil","Ketua"),validateUpdatePengumuman,updatePengumumanController)
+        this.router.delete('/pengumuman/:id', cekJwt,allowedRole("Sekertaris","Wakil","Ketua"),validateDeletePengumuman,deletePengumumanController)
+        
     }
 
     

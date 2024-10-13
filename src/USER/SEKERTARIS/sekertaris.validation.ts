@@ -168,10 +168,39 @@ const deleteSiswaValidation = async (req: Request, res: Response, next: NextFunc
     return next()
 }
 
+const pengumumanSchema = Joi.object({
+    description: Joi.string().required()
+})
+
+const validateAddPengumuman = async (req: Request, res: Response, next: NextFunction) => {
+    const validate = pengumumanSchema.validate(req.body)
+    if (validate.error) return res.status(400).json({message: validate.error.details.map(item => item.message)})
+    return next()
+}
+
+const updatePengumumanSchema = Joi.object({
+    description: Joi.string().optional()
+})
+
+const validateUpdatePengumuman = async (req: Request, res: Response, next: NextFunction) => {
+    const validateId = validateIdSchema.validate(req.params)
+    const validate = updatePengumumanSchema.validate(req.body)
+    if (validateId.error) return res.status(400).json({message: validateId.error.details.map(item => item.message)})
+    if (validate.error) return res.status(400).json({message: validate.error.details.map(item => item.message)})
+    return next()
+}
+
+const validateDeletePengumuman = async (req: Request, res: Response, next: NextFunction) => {
+    const validateId = validateIdSchema.validate(req.params)
+    if (validateId.error) return res.status(400).json({message: validateId.error.details.map(item => item.message)})
+    return next()
+}
+
 
 export {validateAddGuru,validateUpdateGuru,validateDeleteGuru,
     validateAddTugas, validateUpdateTugas, validateDeleteTugas,
     validateAddEvent, validateUpdateEvent, validateDeleteEvent,
     validateAddJadwal, validateUpdateJadwal, validateDeleteJadwal,
-    addSiswaValidation, updateSiswaValidation, deleteSiswaValidation
+    addSiswaValidation, updateSiswaValidation, deleteSiswaValidation,
+    validateAddPengumuman, validateUpdatePengumuman, validateDeletePengumuman
 }

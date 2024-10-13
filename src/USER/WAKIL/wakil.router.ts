@@ -1,6 +1,4 @@
-import bendaharaRouter from "../BENDAHARA/bendahara.router";
 import sekertarisRouter from "../SEKERTARIS/sekertaris.router";
-import SiswaRouter from "../SISWA/siswa.router";
 
 class wakilRouter extends sekertarisRouter {
 
@@ -12,5 +10,7 @@ class wakilRouter extends sekertarisRouter {
     wakilRouter() {}
     
 }
+
+
 
 export default wakilRouter

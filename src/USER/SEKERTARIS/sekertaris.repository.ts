@@ -5,11 +5,13 @@ import prisma from "../../DATABASE/db";
 /** Tugas */
 
 const addTugas = async (newTugas: addNewTugas) => {
-    return await prisma.tugas.create({ data: newTugas })
+    const data =  await prisma.tugas.create({ data: newTugas, include: {guru: {select: {nama: true, mapel: true}}} })
+    return {id: data.id,guru: data.guru.nama,mapel: data.guru.mapel,judul: data.judul,deskripsi: data.deskripsi,deadLine: data.deadLine,}
 }
 
 const updateTugas = async (newTugas: addNewTugas, id: number) => {
-    return await prisma.tugas.update({ where: {id}, data: newTugas})
+    const data = await prisma.tugas.update({ where: {id}, data: newTugas, include: {guru: {select: {nama: true, mapel: true}}}})
+    return {id: data.id,guru: data.guru.nama,mapel: data.guru.mapel,judul: data.judul,deskripsi: data.deskripsi,deadLine: data.deadLine,}
 } 
 
 const deleteTugas = async (id: number) => {
@@ -64,11 +66,13 @@ const getGuruById = async (id: number) => {
 /** Jadwal */
 
 const addJadwal = async (newData: addNewJadwal) => {
-    return await prisma.jadwal.create({ data: newData })
+    const data = await prisma.jadwal.create({ data: newData , include: {guru: {select: {nama: true, mapel: true}}}})
+    return {id: data.id, hari: data.hari, guru: data.guru?.nama, mapel: data.guru?.mapel}
 }
 
 const updateJadwal = async (newData: addNewJadwal, id: number) => {
-    return await prisma.jadwal.update({ where: {id}, data: newData})
+     const data = await prisma.jadwal.update({ where: {id}, data: newData, include: {guru: {select: {nama: true, mapel: true}}}})
+      return {id: data.id, hari: data.hari, guru: data.guru?.nama, mapel: data.guru?.mapel}
 }
 
 const deleteJadwal = async (id: number) => {
@@ -82,7 +86,8 @@ const getJadwalById = async (id: number) => {
 /** Siswa */
 
 const addSiswa = async (newData: addNewSiswa) => {
-    return await prisma.siswa.create({data: {email: newData.email, password: newData.password, nama: newData.nama, no_telp: newData.no_telp, photo: "https://tse4.mm.bing.net/th?id=OIP.ELnJq_JhiyfewhCMKOkNfwHaHa&pid=Api&P=0&h=180", jabatan: "Siswa", absen: newData.absen}})
+    const data = await prisma.siswa.create({data: {email: newData.email, password: newData.password, nama: newData.nama, no_telp: newData.no_telp, photo: "https://tse4.mm.bing.net/th?id=OIP.ELnJq_JhiyfewhCMKOkNfwHaHa&pid=Api&P=0&h=180", jabatan: "Siswa", absen: newData.absen}})
+    return {id: data.id, nama: data.nama, absen: data.absen, email: data.email, no_telp: data.no_telp}
 } 
 
 const updateSiswa = async (newData: addNewSiswa, id: number) => {
@@ -102,10 +107,28 @@ const getSiswaById = async (id: number) => {
     return await prisma.siswa.findFirst({where: {id}})
 }
 
+/** pengumuman */
+const addPengumuman = async (deskripsi: string) =>  {
+ return await prisma.pengumuman.create({data: {deskripsi}})
+}
+
+const updatePengumuman = async (id: number,deskripsi: string) => {
+    return await prisma.pengumuman.update({where: {id}, data: {deskripsi}})
+}
+
+const deletePengumuman = async (id: number) => {
+    return await prisma.pengumuman.delete({where: {id}})
+}
+
+const getPengumumanById = async (id: number) => {
+    return await prisma.pengumuman.findFirst({where: {id}})
+}
+
 export {addTugas,updateTugas,deleteTugas,addEvent,updateEvent,deleteEvent
     ,addGuru, updateGuru, deleteGuru,
     addJadwal, updateJadwal, deleteJadwal,
     addSiswa, updateSiswa, deleteSiswa, getAllSiswa,
-    getTugasById, getEventById, getGuruById, getJadwalById, getSiswaById
-} 
+    getTugasById, getEventById, getGuruById, getJadwalById, getSiswaById,
+    addPengumuman, updatePengumuman, deletePengumuman, getPengumumanById}  // Add more functions as needed  // Add more types as needed  // Add more interfaces as needed  // Add more models as needed  // Add more prisma queries as needed  // Add more prisma mutations as needed  // Add more prisma subscriptions as needed  // Add more prisma hooks as needed  // Add more prisma error handling as needed  // Add more prisma event listeners as needed
+
 

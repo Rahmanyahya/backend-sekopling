@@ -3,5 +3,6 @@ import {loginController} from "./login.controller"
 import {loginValidation} from "./login.validation"
 const router = Router()
 
-router.post('/Login', loginValidation ,loginController)
+router.post('/', loginValidation ,loginController)
 
+export default router
