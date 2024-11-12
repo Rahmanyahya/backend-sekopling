@@ -15,8 +15,8 @@ datasource db {
 
 model Siswa {
   id             Int             @id @default(autoincrement())
-  email          String @unique
-  absen Int @unique
+  email          String          @unique
+  absen          Int             @unique
   password       String
   nama           String
   no_telp        String
@@ -28,39 +28,39 @@ model Siswa {
 }
 
 model Guru {
-  id        Int            @id @default(autoincrement())
-  nama      String         @unique
+  id        Int      @id @default(autoincrement())
+  nama      String   @unique
   mapel     Mapel
   jadwal    Jadwal[]
   tugas     Tugas[]
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
 model Jadwal {
-  id        Int        @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   hari      Hari
   guruID    Int
-  start String
-  end String
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @default(now())
+  start     DateTime 
+  end       DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 
-   guru Guru? @relation(fields: [guruID], references: [id])
+  guru Guru? @relation(fields: [guruID], references: [id])
 }
 
 model pengumuman {
-  id        Int       @id @default(autoincrement())
-  deskripsi String    
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
+  id        Int      @id @default(autoincrement())
+  deskripsi String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
 model Tugas {
   id        Int       @id @default(autoincrement())
   judul     String    @unique
   deskripsi String
-  deadLine  DateTime?  @default(now())
+  deadLine  DateTime? @default(now())
   guruID    Int
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
@@ -74,7 +74,7 @@ model Transaksi_kas {
   Jumlah    Float             @db.Double
   bulan     Bulan
   Minggu    Minggu_Ke
-  status    Status_Pembayaran  @default(Belum_Bayar)
+  status    Status_Pembayaran @default(Belum_Bayar)
   createdAt DateTime          @default(now())
   updatedAt DateTime          @default(now())
 
@@ -82,12 +82,12 @@ model Transaksi_kas {
 }
 
 model event {
-  id        Int      @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   pelaksanaan DateTime @default(now())
-  judul     String @unique
-  deskripsi String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  judul       String   @unique
+  deskripsi   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 }
 
 enum Role {

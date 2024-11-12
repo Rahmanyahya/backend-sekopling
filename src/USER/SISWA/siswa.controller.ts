@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getEvent, getKas, getMapel, getTugas, updateProfile, getSiswaById, getProfileSiswa, getPengumuman } from "./siswa.repository"
+import { getEvent, getKas, getMapel, getTugas, updateProfile, getSiswaById, getProfileSiswa, getPengumuman, getGuru } from "./siswa.repository"
 import { CustomRequest, updateProfileData } from "../../config"
 import { deleteImage } from "../../utils/deletePhoto"
 
@@ -22,14 +22,14 @@ const getKasController = async (req: CustomRequest, res: Response) => {
 
     return res.status(200).json({ message: "Succes get kas", Kas })
   } catch (error) {
-    return res.status(500).json({message: "internal error somthing went wrong", error})
+    return res.status(500).json({ message: "internal error somthing went wrong", error })
   }
 }
 
 const getEventController = async (req: Request, res: Response) => {
   try {
     const listEvent = await getEvent()
-   
+
     if (listEvent == null) return res.status(404).json({ message: "No event this month" })
 
     const Event = listEvent.map((data) => ({
@@ -41,7 +41,7 @@ const getEventController = async (req: Request, res: Response) => {
 
     return res.status(200).json({ message: "Succes get event", Event })
   } catch (error) {
-    return res.status(500).json({message: "internal error somthing went wrong", error})
+    return res.status(500).json({ message: "internal error somthing went wrong", error })
   }
 }
 
@@ -50,8 +50,8 @@ const getMapelController = async (req: Request, res: Response) => {
     const listMapel = await getMapel()
 
     if (listMapel == null) return res.status(403).json({ message: "Under Maintanance" })
-    
-    const Mapel =  listMapel.map((data) => ({
+
+    const Mapel = listMapel.map((data) => ({
       id: data.id,
       hari: data.hari,
       guru: data.guru?.nama,
@@ -60,7 +60,7 @@ const getMapelController = async (req: Request, res: Response) => {
 
     return res.status(200).json({ message: "Succes get mapel", Mapel })
   } catch (error) {
-    return res.status(500).json({message: "internal error somthing went wrong", error})
+    return res.status(500).json({ message: "internal error somthing went wrong", error })
   }
 }
 
@@ -111,7 +111,7 @@ const updateProfileController = async (req: CustomRequest, res: Response) => {
 
   } catch (error) {
     deleteImage(req.file?.filename)
-    return res.status(500).json({message: "internal error somthing went wrong", error})
+    return res.status(500).json({ message: "internal error somthing went wrong", error })
   }
 }
 
@@ -122,18 +122,30 @@ const getUserProfileController = async (req: CustomRequest, res: Response) => {
 
     return userProfile == null ? res.status(404).json({ message: "Profile not found" }) : res.status(200).json({ message: "succes get profile", userProfile })
   } catch (error) {
-    return res.status(500).json({message: "internal error somthing went wrong", error})
+    return res.status(500).json({ message: "internal error somthing went wrong", error })
   }
 }
 
 const getPengumumanController = async (req: Request, res: Response) => {
   try {
     const pengumuman = await getPengumuman()
-    
+
     if (pengumuman == null) return res.status(404).json({ message: "No pengumuman this month" })
-    return res.status(200).json({message: "succes get pengumuman", pengumuman})
+    return res.status(200).json({ message: "succes get pengumuman", pengumuman })
   } catch (error) {
-    return res.status(500).json({message: "internal error somthing went wrong", error})
+    return res.status(500).json({ message: "internal error somthing went wrong", error })
+  }
+}
+
+export const getGuruControl = async (req: Request, res: Response) => {
+  try {
+    const data = await getGuru()
+    return data == null ? res.status(404).json({ message: "No Teacher Registered" }) : res.status(200).json({
+      message: "succes get guru",
+      data
+    })
+  } catch (error) {
+    return res.status(500).json({ message: `something went wrong ${error}` })
   }
 }
 

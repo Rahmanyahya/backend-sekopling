@@ -5,9 +5,17 @@ import sekertarisRouter from "./USER/SEKERTARIS/sekertaris.router";
 import wakilRouter from "./USER/WAKIL/wakil.router";
 import ketuaRouter from "./USER/KETUA/ketua.router";
 import cookieParser from "cookie-parser";
-import Login from "./auth/login.router"
+import Login from "./AUTH/login.router"
+import cors from "cors"
+
 
 const app = Express()
+
+app.use(cors({
+    origin: "http://localhost:3000",
+    methods: ['GET', 'PUT', 'POST', 'DELETE'],
+    credentials: true
+}))
 app.use(cookieParser())
 app.use(Express.json())
 app.use(Express.urlencoded({ extended: true }))
@@ -25,6 +33,6 @@ app.use('/api/sekertaris', sekertaris.getRouter())
 app.use('/api/ketua', ketua.getRouter())
 app.use('/api/login',Login)
 
-app.listen(3000, () => {
-    console.log("Server is running on port 3000")
+app.listen(3001, () => {
+    console.log('Server running on http://localhost:3001');
 })
